@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { AfterViewInit, Component, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HighchartsChartModule } from 'highcharts-angular';
@@ -34,131 +34,60 @@ interface SeriesZigzagOptions extends Highcharts.SeriesZigzagOptions {}
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   service = inject(AppService);
   title = 'variacao-ativo-exam';
+  showChart = false;
 
-  ngOnInit() {
-    this.service.mySubject.asObservable()
-    .subscribe(data => {
-      if(data.length) {
+
+
+  ngAfterViewInit() {
+    this.service.mySubject.asObservable().subscribe((data) => {
+      if (data.length) {
         console.log('dado: ', data);
+        this.updateFlag = true;
+        //TODO: setar o valor em data para atualizar com o valor da request
 
-        this.chartOptions = {
-          title: {
-            text: 'Variação Ativo em Percentual',
-            style: {
-              color: 'orange',
-            },
-          },
-          chart: {
-            type: 'line',
-            margin: [2, 0, 2, 0],
-            width: 800,
-            height: 320,
-          },
-          xAxis: {
-            type: 'datetime',
-            labels: {
-              formatter: function () {
-                return Highcharts.dateFormat('%d', this.value as any);
-              },
-            },
-            min: this.getPeriod(30), // Define a data atual como o mínimo do eixo x
-          },
-          yAxis: {
-            title: {
-              text: 'Variação de Preço (%)',
-            },
-          },
-          series: [
-            {
-              type: 'ohlc',
-              id: 'base',
-              pointInterval: 24 * 3600 * 1000,
-              data,
-              name: 'okdas',
-              tooltip: {
-                pointFormatter: function () {
-                  // Personalize o texto do tooltip para a série OHLC
-                  const firstPrice = this.series.data[0].options.open as number;
-
-                  const date = new Date(this.x);
-                  const formattedDate = date.toLocaleDateString();
-                  const open = this.options.open as number;
-                  const high = this.options.high as number;
-                  const low = this.options.low as number;
-                  const close = this.options.close as number;
-
-                  // vão ser iguais no primeiro e no segundo.
-                  const variationPercentOpeningDay = (open - firstPrice) * 100; // variação referente ao preço do primeiro dia (%).
-                  // variação referente ao preço do dia anterior (%).
-                  const variationPreviousDay =
-                    this.index > 0
-                      ? ((open -
-                          (this.series.data[this.index - 1] as any).options
-                            .open) as number) * 100
-                      : 0;
-
-                  return `
-                  <span style="font-size: 10px">${formattedDate}</span><br>
-                    Abertura: ${open} BRL<br>
-                    Máxima: ${high} BRL<br>
-                    Mínima: ${low} BRL<br>
-                    Fechamento: ${close} BRL <br><br>
-
-                    <strong style="font-size: 10px;">Variação 1º Dia: ${variationPercentOpeningDay.toFixed(
-                      2
-                    )}%</strong><br>
-                    <strong style="font-size: 10px;">Variação Dia Anterior: ${variationPreviousDay.toFixed(
-                      2
-                    )}%</strong>
-                    `;
-                },
-              },
-            },
-            // this.zigzagData,
-            this.zigzagOpeningData,
-            // {
-            //   type: 'zigzag',
-            //   showInLegend: true,
-            //   linkedTo: 'base',
-            //   params: {
-            //     deviation: 2, // Valor padrão para o Zig Zag (1%)
-            //   },
-            //   tooltip: {
-            //     pointFormatter: function () {
-            //       // Personalize o texto da tooltip Zig Zag aqui
-            //       return 'Valor Zig Zag Personalizado: ' + this.y;
-            //     },
-            //   },
-            // },
-          ],
-        };
+        // console.log('fromReq: ', data[17][0]);
+        // console.log('fromJs: ', this.getPeriod(5));
       }
-    })
+    });
+
+    this.service.getSelectedAsset('PETR4.SA');
   }
 
   highCharts: typeof Highcharts = Highcharts; // required
   chartConstructor: string = 'stockChart'; // optional string, defaults to 'chart'
   ohlcData = [
-    [this.getPeriod(4), 1.0, 150.2, 115, 150],
-    [this.getPeriod(3), 1.1, 148, 23, 39],
-    [this.getPeriod(2), 1.05, 125, 41, 38],
-    [this.getPeriod(1), 1.9, 125, 41, 38],
+    [
+      this.getPeriod(4),
+      35.97999954223633,
+      36.4900016784668,
+      35.5,
+      35.54999923706055,
+    ],
+    [
+      this.getPeriod(3),
+      35.83000183105469,
+      36.91999816894531,
+      35.81999969482422,
+      36.709999084472656,
+    ],
+    [
+      this.getPeriod(2),
+      36.77000045776367,
+      37.220001220703125,
+      36.27000045776367,
+      36.7400016784668,
+    ],
+    [
+      this.getPeriod(1),
+      36.540000915527344,
+      36.540000915527344,
+      35.90999984741211,
+      36.36000061035156,
+    ],
   ];
-
-  // série Zig Zag vinculada à série OHLC
-  zigzagData: SeriesZigzagOptions = {
-    linkedTo: 'base',
-    type: 'zigzag',
-    showInLegend: true,
-    tooltip: {
-      pointFormatter: function () {
-        return ''.toString();
-      },
-    },
-  };
 
   // série OHLC para a variação em relação à abertura
   zigzagOpeningData: SeriesZigzagOptions = {
@@ -172,7 +101,82 @@ export class AppComponent {
     },
   };
 
-  chartOptions: Highcharts.Options = {}
+  chartOptions: Highcharts.Options = {
+    title: {
+      text: 'Variação Ativo em Percentual',
+      style: {
+        color: 'orange',
+      },
+    },
+    chart: {
+      type: 'line',
+      margin: [2, 0, 2, 0],
+      width: 800,
+      height: 320,
+    },
+    xAxis: {
+      type: 'datetime',
+      labels: {
+        formatter: function () {
+          return Highcharts.dateFormat('%d', this.value as any);
+        },
+      },
+      min: this.getPeriod(22), // Define a data atual como o mínimo do eixo x
+    },
+    yAxis: {
+      title: {
+        text: 'Variação de Preço (%)',
+      },
+    },
+    series: [
+      {
+        type: 'ohlc',
+        id: 'base',
+        pointInterval: 24 * 3600 * 1000,
+        data: this.ohlcData,
+        tooltip: {
+          pointFormatter: function () {
+            // Personalize o texto do tooltip para a série OHLC
+            const firstPrice = this.series.data[0].options.open as number;
+
+            const date = new Date(this.x);
+            const formattedDate = date.toLocaleDateString();
+            const open = this.options.open as number;
+            const high = this.options.high as number;
+            const low = this.options.low as number;
+            const close = this.options.close as number;
+
+            // vão ser iguais no primeiro e no segundo.
+            const variationPercentOpeningDay = (open - firstPrice) * 100; // variação referente ao preço do primeiro dia (%).
+            // variação referente ao preço do dia anterior (%).
+            const variationPreviousDay =
+              this.index > 0
+                ? ((open -
+                    (this.series.data[this.index - 1] as any).options
+                      .open) as number) * 100
+                : 0;
+
+            return `
+            <span style="font-size: 10px">${formattedDate}</span><br>
+              Abertura: ${open.toFixed(2)} BRL<br>
+              Máxima: ${high.toFixed(2)} BRL<br>
+              Mínima: ${low.toFixed(2)} BRL<br>
+              Fechamento: ${close.toFixed(2)} BRL <br><br>
+
+              <strong style="font-size: 10px;">Variação 1º Dia: ${variationPercentOpeningDay.toFixed(
+                2
+              )}%</strong><br>
+              <strong style="font-size: 10px;">Variação Dia Anterior: ${variationPreviousDay.toFixed(
+                2
+              )}%</strong>
+              `;
+          },
+        },
+      },
+      this.zigzagOpeningData,
+
+    ],
+  };
 
   chartCallback: Highcharts.ChartCallbackFunction = this.myCallbackChartFunc; // optional function, defaults to null
   updateFlag: boolean = false; // optional boolean
@@ -184,24 +188,25 @@ export class AppComponent {
   }
 
   getPeriod(periodNumber: number) {
-    const currentDate = new Date();
-    const trintaDiasAtras = new Date(currentDate);
-    trintaDiasAtras.setDate(currentDate.getDate() - periodNumber);
-    return trintaDiasAtras.getTime();
+    // Obtém a data e hora atuais
+    const dataAtual = new Date();
+
+    // Define as horas, minutos e segundos para 12:00:00
+    dataAtual.setHours(12, 0, 0, 0);
+
+    // Subtrai 4 dias (em milissegundos) do timestamp atual
+    const timestampQuatroDiasAtras =
+      dataAtual.getTime() - periodNumber * 24 * 60 * 60 * 1000;
+
+    // Converte o timestamp para segundos
+    const timestampQuatroDiasAtrasEmSegundos = Math.floor(
+      timestampQuatroDiasAtras / 1000
+    );
+
+    return timestampQuatroDiasAtrasEmSegundos;
   }
 
   ngAfterContentInit() {}
-
-  // ngOnChanges(change: SimpleChanges) {
-  //   this.chartOptions.series = [
-  //     {
-  //       name: change.name ? change.name.currentValue : null,
-  //       type: 'area',
-  //       data: change.data.currentValue
-  //     }
-  //   ];
-  //   this.updateFlag = true;
-  // }
 
   addSeries() {
     // this.chart.addSeries({
