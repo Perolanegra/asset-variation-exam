@@ -14,7 +14,7 @@
   </ng-container>
 
   <div class="example-button-row">
-    <button mat-raised-button color="primary" (click)="showChart = false; service.getSelectedAsset('PETR4.SA');">PETR4.SA</button>
+    <button mat-raised-button color="primary" (click)="showChart = !showChart; service.getSelectedAsset('PETR4.SA');">PETR4.SA</button>
   </div>
 </div>
 

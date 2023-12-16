@@ -37,14 +37,14 @@ interface SeriesZigzagOptions extends Highcharts.SeriesZigzagOptions {}
 export class AppComponent implements AfterViewInit {
   service = inject(AppService);
   title = 'variacao-ativo-exam';
-  showChart = false;
+  showChart = true;
 
   ngAfterViewInit() {
     this.service.mySubject.asObservable().subscribe((data) => {
       if (data.length) {
         (this.chartOptions as any).series[0].data = [...data];
         this.updateFlag = true;
-        this.showChart = true;
+        this.showChart = !this.showChart;
       }
     });
   }
@@ -126,7 +126,7 @@ export class AppComponent implements AfterViewInit {
         type: 'ohlc',
         id: 'base',
         pointInterval: 24 * 3600 * 1000,
-        data: [],
+        data: this.ohlcDataMock,
         tooltip: {
           pointFormatter: function () {
             // Personalize o texto do tooltip para a série OHLC
