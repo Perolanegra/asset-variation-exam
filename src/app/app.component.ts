@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, SimpleChanges, inject } from '@angular/core';
+import { AfterViewInit, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HighchartsChartModule } from 'highcharts-angular';
