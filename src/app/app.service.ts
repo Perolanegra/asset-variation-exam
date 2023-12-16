@@ -6,21 +6,14 @@ import {
   map,
   Observable,
   shareReplay,
-  switchMap,
   throwError,
   OperatorFunction,
   UnaryFunction,
   pipe,
   distinctUntilChanged,
-  of,
-  EMPTY,
   Subject,
 } from 'rxjs';
-import {
-  toSignal,
-  toObservable,
-  takeUntilDestroyed,
-} from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /**
  * Operador customizado para RxJs que garante que apenas stream
@@ -64,6 +57,7 @@ export class AppService {
       )
       .pipe(
         takeUntilDestroyed(this.destroyRef),
+        distinctUntilChanged(),
         map((data) => {
           const mockPayload = {
             timestampArr: data.chart.result[0].timestamp,
@@ -133,7 +127,14 @@ export class AppService {
     const serializedObjResponse: number[][] = [];
 
     timestampArr.map((t: number, i: number) => {
-      const arrChartSort = [t, openArr[i], highArr[i], lowArr[i], closeArr[i]];
+      const timesTamp = Math.floor(t * 1000);
+      const arrChartSort = [
+        timesTamp,
+        openArr[i],
+        highArr[i],
+        lowArr[i],
+        closeArr[i],
+      ];
       serializedObjResponse.push(arrChartSort);
     });
 

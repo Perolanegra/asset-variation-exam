@@ -13,7 +13,7 @@ import HStockTools from 'highcharts/modules/stock-tools';
 import IndicatorsCore from 'highcharts/indicators/indicators';
 import IndicatorZigzag from 'highcharts/indicators/zigzag';
 import { AppService } from './app.service';
-import { HttpClientModule } from '@angular/common/http';
+import { MatButtonModule } from '@angular/material/button';
 
 HIndicatorsAll(Highcharts);
 HDragPanes(Highcharts);
@@ -30,7 +30,7 @@ interface SeriesZigzagOptions extends Highcharts.SeriesZigzagOptions {}
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HighchartsChartModule],
+  imports: [CommonModule, RouterOutlet, HighchartsChartModule, MatButtonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -39,49 +39,42 @@ export class AppComponent implements AfterViewInit {
   title = 'variacao-ativo-exam';
   showChart = false;
 
-
-
   ngAfterViewInit() {
     this.service.mySubject.asObservable().subscribe((data) => {
       if (data.length) {
-        console.log('dado: ', data);
+        (this.chartOptions as any).series[0].data = [...data];
         this.updateFlag = true;
-        //TODO: setar o valor em data para atualizar com o valor da request
-
-        // console.log('fromReq: ', data[17][0]);
-        // console.log('fromJs: ', this.getPeriod(5));
+        this.showChart = true;
       }
     });
-
-    this.service.getSelectedAsset('PETR4.SA');
   }
 
   highCharts: typeof Highcharts = Highcharts; // required
   chartConstructor: string = 'stockChart'; // optional string, defaults to 'chart'
-  ohlcData = [
+  ohlcDataMock = [
     [
-      this.getPeriod(4),
+      this.getPeriod(4, true),
       35.97999954223633,
       36.4900016784668,
       35.5,
       35.54999923706055,
     ],
     [
-      this.getPeriod(3),
+      this.getPeriod(3, true),
       35.83000183105469,
       36.91999816894531,
       35.81999969482422,
       36.709999084472656,
     ],
     [
-      this.getPeriod(2),
+      this.getPeriod(2, true),
       36.77000045776367,
       37.220001220703125,
       36.27000045776367,
       36.7400016784668,
     ],
     [
-      this.getPeriod(1),
+      this.getPeriod(1, true),
       36.540000915527344,
       36.540000915527344,
       35.90999984741211,
@@ -103,16 +96,16 @@ export class AppComponent implements AfterViewInit {
 
   chartOptions: Highcharts.Options = {
     title: {
-      text: 'Variação Ativo em Percentual',
+      text: 'Variação Ativo em Percentual (%)',
       style: {
-        color: 'orange',
+        color: '#544fc5',
       },
     },
     chart: {
       type: 'line',
       margin: [2, 0, 2, 0],
       width: 800,
-      height: 320,
+      height: 400,
     },
     xAxis: {
       type: 'datetime',
@@ -121,7 +114,7 @@ export class AppComponent implements AfterViewInit {
           return Highcharts.dateFormat('%d', this.value as any);
         },
       },
-      min: this.getPeriod(22), // Define a data atual como o mínimo do eixo x
+      min: this.getPeriod(30, true), // Define a data atual como o mínimo do eixo x
     },
     yAxis: {
       title: {
@@ -133,7 +126,7 @@ export class AppComponent implements AfterViewInit {
         type: 'ohlc',
         id: 'base',
         pointInterval: 24 * 3600 * 1000,
-        data: this.ohlcData,
+        data: [],
         tooltip: {
           pointFormatter: function () {
             // Personalize o texto do tooltip para a série OHLC
@@ -157,37 +150,32 @@ export class AppComponent implements AfterViewInit {
                 : 0;
 
             return `
-            <span style="font-size: 10px">${formattedDate}</span><br>
-              Abertura: ${open.toFixed(2)} BRL<br>
-              Máxima: ${high.toFixed(2)} BRL<br>
-              Mínima: ${low.toFixed(2)} BRL<br>
-              Fechamento: ${close.toFixed(2)} BRL <br><br>
+              <span style="font-size: 10px">${formattedDate}</span><br>
+                Abertura: ${open.toFixed(2)} BRL<br>
+                Máxima: ${high.toFixed(2)} BRL<br>
+                Mínima: ${low.toFixed(2)} BRL<br>
+                Fechamento: ${close.toFixed(2)} BRL <br><br>
 
-              <strong style="font-size: 10px;">Variação 1º Dia: ${variationPercentOpeningDay.toFixed(
-                2
-              )}%</strong><br>
-              <strong style="font-size: 10px;">Variação Dia Anterior: ${variationPreviousDay.toFixed(
-                2
-              )}%</strong>
-              `;
+              <strong style="font-size: 10px;">
+                Variação 1º Dia: ${variationPercentOpeningDay.toFixed(2)}%
+              </strong>
+              <br>
+              <strong style="font-size: 10px;">
+                Variação Dia Anterior: ${variationPreviousDay.toFixed(2)}%
+              </strong>
+            `;
           },
         },
       },
       this.zigzagOpeningData,
-
     ],
   };
 
-  chartCallback: Highcharts.ChartCallbackFunction = this.myCallbackChartFunc; // optional function, defaults to null
   updateFlag: boolean = false; // optional boolean
   oneToOneFlag: boolean = true; // optional boolean, defaults to false
   runOutsideAngular: boolean = false; // optional boolean, defaults to false
 
-  myCallbackChartFunc(chart: any) {
-    console.log('my callBack chart: ', chart);
-  }
-
-  getPeriod(periodNumber: number) {
+  getPeriod(periodNumber: number, hasFirstData: boolean = false) {
     // Obtém a data e hora atuais
     const dataAtual = new Date();
 
@@ -203,18 +191,8 @@ export class AppComponent implements AfterViewInit {
       timestampQuatroDiasAtras / 1000
     );
 
-    return timestampQuatroDiasAtrasEmSegundos;
-  }
-
-  ngAfterContentInit() {}
-
-  addSeries() {
-    // this.chart.addSeries({
-    //   name: 'Line ' + Math.floor(Math.random() * 10),
-    //   data: [
-    //     10,20,30,40,50,50
-    //   ]
-    // });
-    // this.highCharts.
+    return hasFirstData
+      ? timestampQuatroDiasAtras
+      : timestampQuatroDiasAtrasEmSegundos;
   }
 }
