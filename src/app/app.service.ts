@@ -76,7 +76,7 @@ export class AppService {
   }
 
   public get assets(): string[] {
-    return ['BTC-USD', 'PETR4.SA', 'GC%3DF']; // alguns ativos como exemplo.
+    return ['BTC-USD', 'PETR4.SA', 'GC%3DF']; // alguns ativos como exemplo..
   }
 
   private handleError = (err: HttpErrorResponse): Observable<never> => {
