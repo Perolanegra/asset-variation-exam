@@ -24,7 +24,7 @@ para o frontend. <br>
 ## Demo
 
 + Para uma demonstração mockada visite aqui o: <a href="https://perolanegra.github.io/asset-variation-exam/">GH-Pages!<a> <br>
-+ <strong>A implementação da Demo mockada se encontra na branch: <a style="font-style: italic; text-decoration: overline;">feature/gh-pages-live</a></strong>
++ <strong>A implementação da Demo mockada se encontra na branch: </strong> <span style="font-style: italic; text-decoration: overline;">feature/gh-pages-live</span>
 
 ## Build
 
