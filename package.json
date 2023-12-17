@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "concurrently \"npm run s:dev\"  \"npm run s:proxy\" ",
-    "s:dev": "ng serve",
+    "s:dev": "ng serve -o",
     "s:proxy": "nodemon server.js",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
