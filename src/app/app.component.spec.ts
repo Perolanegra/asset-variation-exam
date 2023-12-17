@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'variacao-ativo-exam' title`, () => {
+  it(`should have the 'asset-variation-exam' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('variacao-ativo-exam');
+    expect(app.title).toEqual('asset-variation-exam');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, variacao-ativo-exam');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, asset-variation-exam');
   });
 });

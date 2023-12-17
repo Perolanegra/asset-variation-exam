@@ -8,7 +8,7 @@ const app = express();
 
 // Configuração do Express para servir a aplicação Angular
 app.use(
-  express.static(path.join(__dirname, "dist/variacao-ativo-exam")),
+  express.static(path.join(__dirname, "dist/asset-variation-exam")),
   cors({
     origin: "http://localhost:4200", // Substitua pelo domínio real do seu aplicativo Angular
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",

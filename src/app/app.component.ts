@@ -27,7 +27,7 @@ interface SeriesZigzagOptions extends Highcharts.SeriesZigzagOptions {}
 export class AppComponent implements AfterViewInit {
   service = inject(AppService);
   private destroyRef = inject(DestroyRef);
-  title = 'variacao-ativo-exam';
+  title = 'asset-variation-exam';
   showChart = true;
 
   ngAfterViewInit(): void {

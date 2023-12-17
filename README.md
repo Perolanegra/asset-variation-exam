@@ -23,7 +23,7 @@ para o frontend. <br>
 
 ## Build
 
-Para rodar o build execute o seguinte comando `npm run build` e depois navegue para dentro da pasta <br/> `dist/variacao-ativo-exam` para checar os artefatos gerados.
+Para rodar o build execute o seguinte comando `npm run build` e depois navegue para dentro da pasta <br/> `dist/asset-variation-exam` para checar os artefatos gerados.
 
 ## Testes Unitários
 
