@@ -7,10 +7,10 @@ Rode o seguinte comando para garantir a equivalência do lock json file ao baixa
 
 ## Servidor de Desenvolvimento (Angular)
 
-Para subir o servidor de desenvolvimento rode o seguinte comando `npm run start` e navegue para `http://localhost:4200/` na url do seu browser.<br>
-Você irá se deparar inicialmente com um gráfico com dados mockados, e com 5 ativos para consulta. <br>
-Para interação com o gráfico, selecione algum ativo ao clicar no botão referente ao mesmo e o gráfico será recalculado com os novos valores.<br>
-Em cada ponto do gráfico é exibido o dia, os preços juntamente com o cálculo das variações de preço.
++ Para subir o servidor de desenvolvimento rode o seguinte comando `npm run start` e navegue <br> para `http://localhost:4200/` na url do seu browser.<br>
++ Você irá se deparar inicialmente com um gráfico com dados mockados, e com 5 ativos para consulta. <br>
++ Para interação com o gráfico, selecione algum ativo ao clicar no botão referente ao mesmo e o <br >gráfico será recalculado com os novos valores.<br>
++ Em cada ponto do gráfico é exibido o dia, os preços juntamente com o cálculo das variações de preço.
 
 ## Tech Through 
 
