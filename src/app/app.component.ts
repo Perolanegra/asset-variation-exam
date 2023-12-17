@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject } from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HighchartsChartModule } from 'highcharts-angular';
@@ -8,6 +8,8 @@ import IndicatorsCore from 'highcharts/indicators/indicators';
 import IndicatorZigzag from 'highcharts/indicators/zigzag';
 import { AppService } from './app.service';
 import { MatButtonModule } from '@angular/material/button';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { distinctUntilChanged } from 'rxjs';
 
 IndicatorsCore(Highcharts);
 IndicatorZigzag(Highcharts);
@@ -24,21 +26,25 @@ interface SeriesZigzagOptions extends Highcharts.SeriesZigzagOptions {}
 })
 export class AppComponent implements AfterViewInit {
   service = inject(AppService);
+  private destroyRef = inject(DestroyRef);
   title = 'variacao-ativo-exam';
   showChart = true;
 
-  ngAfterViewInit() {
-    this.service.mySubject.asObservable().subscribe((data) => {
-      if (data.length) {
-        (this.chartOptions as any).series[0].data = [...data];
-        this.chartOptions.title = {
-          ...this.chartOptions.title,
-          text: `Variação Ativo: ${this.title} em Percentual (%)`,
-        };
-        this.updateFlag = true;
-        this.showChart = true;
-      }
-    });
+  ngAfterViewInit(): void {
+    this.service.mySubject
+      .asObservable()
+      .pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
+      .subscribe((data) => {
+        if (data.length) {
+          (this.chartOptions as any).series[0].data = [...data];
+          this.chartOptions.title = {
+            ...this.chartOptions.title,
+            text: `Variação Ativo: <span style="color: red;">${this.title}</span> em Percentual (%)`,
+          };
+          this.updateFlag = true;
+          this.showChart = true;
+        }
+      });
   }
 
   selectAssetState = (assetName: string): void => {
@@ -187,5 +193,5 @@ export class AppComponent implements AfterViewInit {
     const pastTimestampInSeconds = Math.floor(pastTimestamp / 1000);
 
     return hasFirstData ? pastTimestamp : pastTimestampInSeconds;
-  };
+  }
 }
