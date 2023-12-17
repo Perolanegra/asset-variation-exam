@@ -1,18 +1,27 @@
+<div class="chart-container">
+  <div style="height: 400px;">
+    <ng-container *ngIf="showChart">
+      <highcharts-chart
+        [Highcharts]="highCharts"
+        [constructorType]="chartConstructor"
+        [options]="chartOptions"
+        [(update)]="updateFlag"
+        [oneToOne]="oneToOneFlag"
+        [runOutsideAngular]="runOutsideAngular"
+        style="width: 100%; height: 400px; display: block"
+      ></highcharts-chart>
+    </ng-container>
+  </div>
 
-
-
-<div *ngIf="service.recentUpdates().length" class="chart-container">
-  <highcharts-chart
-    [Highcharts]="highCharts"
-    [constructorType]="chartConstructor"
-    [options]="chartOptions"
-    [callbackFunction]="chartCallback"
-    [(update)]="updateFlag"
-    [oneToOne]="oneToOneFlag"
-    [runOutsideAngular]="runOutsideAngular"
-
-
-    style="width: 100%; height: 400px; display: block;"
-  ></highcharts-chart>
+  <div>
+    <button
+      *ngFor="let assetName of service.assets"
+      style="margin: 0 1.5rem"
+      mat-raised-button
+      color="primary"
+      (click)="selectAssetState(assetName)"
+    >
+      {{ assetName }}
+    </button>
+  </div>
 </div>
-

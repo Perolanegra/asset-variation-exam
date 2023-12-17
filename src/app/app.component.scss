@@ -1,4 +1,11 @@
 .chart-container {
-  width: 80%; /* ou a largura desejada */
-  margin: 0 auto; /* Isso centraliza a div horizontalmente */
+  width: 80%; /* Ajuste a largura conforme necessário */
+  max-width: 800px;
+}
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
