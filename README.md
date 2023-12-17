@@ -14,12 +14,12 @@ Em cada ponto do gráfico é exibido o dia, os preços juntamente com o cálculo
 
 ## Tech Through 
 
-Foi criado um server proxy intermediário para realizar as requisições para a api de finanças do yahoo, para sanar problemas como origem
-bloqueada de domínio (CORS), entre outros.
-Foi implementado o arquivo server.js contendo o código necessário para realizar a requisição ao Yahoo server, serializando o objeto de retorno 
-para o frontend.
-Foi utilizado o Material pela facilidade em components lib.
-O Service simula um "singleton", sem muita separação de camadas por se tratar de algo simples.
++ Foi criado um server proxy intermediário para realizar as requisições para a api de finanças do yahoo, para sanar problemas como origem
+bloqueada de domínio (CORS), entre outros. <br>
++ Foi implementado o arquivo server.js contendo o código necessário para realizar a requisição ao Yahoo server, serializando o objeto de retorno 
+para o frontend. <br>
++ Foi utilizado o Material pela facilidade em components lib. <br>
++ O Service simula um "singleton", sem muita separação de camadas por se tratar de algo simples.
 
 ## Build
 
