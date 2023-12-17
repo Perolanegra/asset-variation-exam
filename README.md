@@ -1,27 +1,30 @@
-# VariacaoAtivoExam
+# Variação Ativo Exam
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.5.
+O projeto foi gerado na versão 17.0.5 do Angular Framework.<br/>
+Antes de rodar o servidor de desenvolvimento, baixar as dependencias do projeto.<br/>
+Certifique-se de estar usando a versão 18.18.0 do Nodejs.<br/>
+Rode o seguinte comando para garantir a equivalência do lock json file ao baixar as libs: `npm ci`
 
-## Development server
+## Servidor de Desenvolvimento (Angular)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Para subir o servidor de desenvolvimento rode o seguinte comando `npm run start` e navegue para `http://localhost:4200/` na url do seu browser.<br>
+Você irá se deparar inicialmente com um gráfico com dados mockados, e com 5 ativos para consulta. <br>
+Para interação com o gráfico, selecione algum ativo ao clicar no botão referente ao mesmo e o gráfico será recalculado com os novos valores.<br>
+Em cada ponto do gráfico é exibido o dia, os preços juntamente com o cálculo das variações de preço.
 
-## Code scaffolding
+## Tech Through 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Foi criado um server proxy intermediário para realizar as requisições para a api de finanças do yahoo, para sanar problemas como origem
+bloqueada de domínio (CORS), entre outros.
+Foi implementado o arquivo server.js contendo o código necessário para realizar a requisição ao Yahoo server, serializando o objeto de retorno 
+para o frontend.
+Foi utilizado o Material pela facilidade em components lib.
+O Service simula um "singleton", sem muita separação de camadas por se tratar de algo simples.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Para rodar o build execute o seguinte comando `npm run build` e depois navegue para dentro da pasta <br/> `dist/variacao-ativo-exam` para checar os artefatos gerados.
 
-## Running unit tests
+## Testes Unitários
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Para rodar os teste unitários execute o seguinte comando no terminal `npm run test`, apesar de não ter implementado nenhum teste específico.
