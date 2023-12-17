@@ -4,27 +4,15 @@ import { RouterOutlet } from '@angular/router';
 import { HighchartsChartModule } from 'highcharts-angular';
 import * as Highcharts from 'highcharts/highstock';
 
-import HIndicatorsAll from 'highcharts/indicators/indicators-all';
-import HDragPanes from 'highcharts/modules/drag-panes';
-import HAnnotationsAdvanced from 'highcharts/modules/annotations-advanced';
-import HPriceIndicator from 'highcharts/modules/price-indicator';
-import HStockTools from 'highcharts/modules/stock-tools';
-
 import IndicatorsCore from 'highcharts/indicators/indicators';
 import IndicatorZigzag from 'highcharts/indicators/zigzag';
 import { AppService } from './app.service';
 import { MatButtonModule } from '@angular/material/button';
 
-HIndicatorsAll(Highcharts);
-HDragPanes(Highcharts);
-HAnnotationsAdvanced(Highcharts);
-HPriceIndicator(Highcharts);
-HStockTools(Highcharts);
-
 IndicatorsCore(Highcharts);
 IndicatorZigzag(Highcharts);
 
-// Defina o tipo da série Zig Zag
+// Tipo da série Zig Zag
 interface SeriesZigzagOptions extends Highcharts.SeriesZigzagOptions {}
 
 @Component({
@@ -43,14 +31,24 @@ export class AppComponent implements AfterViewInit {
     this.service.mySubject.asObservable().subscribe((data) => {
       if (data.length) {
         (this.chartOptions as any).series[0].data = [...data];
+        this.chartOptions.title = {
+          ...this.chartOptions.title,
+          text: `Variação Ativo: ${this.title} em Percentual (%)`,
+        };
         this.updateFlag = true;
-        this.showChart = !this.showChart;
+        this.showChart = true;
       }
     });
   }
 
+  selectAssetState = (assetName: string): void => {
+    this.showChart = false;
+    this.service.getSelectedAsset(assetName);
+    this.title = assetName;
+  };
+
   highCharts: typeof Highcharts = Highcharts; // required
-  chartConstructor: string = 'stockChart'; // optional string, defaults to 'chart'
+  chartConstructor: string = 'stockChart';
   ohlcDataMock = [
     [
       this.getPeriod(4, true),
@@ -82,7 +80,7 @@ export class AppComponent implements AfterViewInit {
     ],
   ];
 
-  // série OHLC para a variação em relação à abertura
+  // série zigzag para ligar os pontos referente ao dado da serie ohlc
   zigzagOpeningData: SeriesZigzagOptions = {
     linkedTo: 'base',
     type: 'zigzag',
@@ -139,6 +137,7 @@ export class AppComponent implements AfterViewInit {
             const low = this.options.low as number;
             const close = this.options.close as number;
 
+            // variação referente ao preço do dia de abertura (%).
             // vão ser iguais no primeiro e no segundo.
             const variationPercentOpeningDay = (open - firstPrice) * 100; // variação referente ao preço do primeiro dia (%).
             // variação referente ao preço do dia anterior (%).
@@ -157,11 +156,11 @@ export class AppComponent implements AfterViewInit {
                 Fechamento: ${close.toFixed(2)} BRL <br><br>
 
               <strong style="font-size: 10px;">
-                Variação 1º Dia: ${variationPercentOpeningDay.toFixed(2)}%
+                Variação 1º Dia: ${variationPercentOpeningDay.toFixed(1)}%
               </strong>
               <br>
               <strong style="font-size: 10px;">
-                Variação Dia Anterior: ${variationPreviousDay.toFixed(2)}%
+                Variação Dia Anterior: ${variationPreviousDay.toFixed(1)}%
               </strong>
             `;
           },
@@ -175,24 +174,18 @@ export class AppComponent implements AfterViewInit {
   oneToOneFlag: boolean = true; // optional boolean, defaults to false
   runOutsideAngular: boolean = false; // optional boolean, defaults to false
 
-  getPeriod(periodNumber: number, hasFirstData: boolean = false) {
+  getPeriod(periodNumber: number, hasFirstData: boolean = false): number {
     // Obtém a data e hora atuais
-    const dataAtual = new Date();
+    const now = new Date();
 
     // Define as horas, minutos e segundos para 12:00:00
-    dataAtual.setHours(12, 0, 0, 0);
+    now.setHours(12, 0, 0, 0);
 
-    // Subtrai 4 dias (em milissegundos) do timestamp atual
-    const timestampQuatroDiasAtras =
-      dataAtual.getTime() - periodNumber * 24 * 60 * 60 * 1000;
+    const pastTimestamp = now.getTime() - periodNumber * 24 * 60 * 60 * 1000;
 
     // Converte o timestamp para segundos
-    const timestampQuatroDiasAtrasEmSegundos = Math.floor(
-      timestampQuatroDiasAtras / 1000
-    );
+    const pastTimestampInSeconds = Math.floor(pastTimestamp / 1000);
 
-    return hasFirstData
-      ? timestampQuatroDiasAtras
-      : timestampQuatroDiasAtrasEmSegundos;
-  }
+    return hasFirstData ? pastTimestamp : pastTimestampInSeconds;
+  };
 }

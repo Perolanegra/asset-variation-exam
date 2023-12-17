@@ -1,12 +1,17 @@
 {
   "name": "variacao-ativo-exam",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run s:dev & npm run s:proxy",
+    "s:dev": "ng serve",
+    "s:proxy": "nodemon server.js",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
+  },
+  "engines": {
+    "node": "18.18.0"
   },
   "private": true,
   "dependencies": {
@@ -20,8 +25,10 @@
     "@angular/platform-browser": "^17.0.0",
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/router": "^17.0.0",
+    "axios": "^1.6.2",
     "highcharts": "^11.2.0",
     "highcharts-angular": "^4.0.0",
+    "nodemon": "^3.0.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
@@ -31,6 +38,7 @@
     "@angular/cli": "^17.0.5",
     "@angular/compiler-cli": "^17.0.0",
     "@types/jasmine": "~5.1.0",
+    "express": "^4.18.2",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
