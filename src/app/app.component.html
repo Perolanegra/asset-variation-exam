@@ -1,5 +1,5 @@
 <div class="chart-container">
-  <div style="height: 400px;">
+  <div style="height: 400px">
     <ng-container *ngIf="showChart">
       <highcharts-chart
         [Highcharts]="highCharts"
@@ -13,7 +13,7 @@
     </ng-container>
   </div>
 
-  <div>
+  <div style="display: flex; justify-content: center">
     <button
       *ngFor="let assetName of service.assets"
       style="margin: 0 1.5rem"
