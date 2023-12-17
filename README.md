@@ -21,6 +21,11 @@ para o frontend. <br>
 + Foi utilizado o Material pela facilidade em components lib. <br>
 + O Service simula um "singleton", sem muita separação de camadas por se tratar de algo simples.
 
+## Demo
+
++ Para uma demonstração mockada visite aqui o: <a href="https://perolanegra.github.io/asset-variation-exam/">GH-Pages!<a> <br>
++ <strong>A implementação da Demo mockada se encontra na branch: <span style="font-style: italic; text-decoration: overline;">feature/gh-pages-live</span></strong>
+
 ## Build
 
 Para rodar o build execute o seguinte comando `npm run build` e depois navegue para dentro da pasta <br/> `dist/asset-variation-exam` para checar os artefatos gerados.
