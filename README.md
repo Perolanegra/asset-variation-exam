@@ -24,7 +24,7 @@ para o frontend. <br>
 ## Demo
 
 + Para uma demonstração mockada visite aqui o: <a href="https://perolanegra.github.io/asset-variation-exam/">GH-Pages!<a> <br>
-+ <strong>A implementação da Demo mockada se encontra na branch: <kbd href="https://github.com/Perolanegra/asset-variation-exam/tree/feature/gh-pages-live">*feature/gh-pages-live*</kbd></strong>
++ <strong>A implementação da Demo mockada se encontra na branch: <a href="https://github.com/Perolanegra/asset-variation-exam/tree/feature/gh-pages-live"><kbd>*feature/gh-pages-live*</kbd></a></strong>
 
 ## Build
 
