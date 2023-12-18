@@ -3,7 +3,15 @@
 O projeto foi gerado na versão 17.0.5 do Angular Framework.<br/>
 Antes de rodar o servidor de desenvolvimento, baixar as dependencias do projeto.<br/>
 Certifique-se de estar usando a versão 18.18.0 do Nodejs.<br/>
-Rode o seguinte comando para garantir a equivalência do lock json file ao baixar as libs: `npm ci`
+Rode o seguinte comando para garantir a equivalência do lock json file ao baixar as libs: `npm ci` <br> <br> <hr>
+
+<font size="5">**Ponto de Atenção!**</font>
+
+#### <kbd>*PS: Foi necessário utilizar um endpoint diferente do passado no exame, pois foi verificado que a url passada:*</kbd>
+- <code>https://query2.finance.yahoo.com/v8/finance/chart/PETR4.SA</code>  <br>
+#### <kbd>*somente traz os timestamps do dia corrente, e não nos últimos 30 dias. <br> Logo, foi utilizada a a seguinte url:*</kbd>
+- <code>https://query1.finance.yahoo.com/v7/finance/chart/</code>  <br>
+#### <kbd>*com os parâmetros do ativo selecionado, no período de 30 dias*</kbd> <hr>
 
 ## Servidor de Desenvolvimento (Angular)
 
