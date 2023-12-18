@@ -7,11 +7,11 @@ Rode o seguinte comando para garantir a equivalência do lock json file ao baixa
 
 <font size="5">**Ponto de Atenção!**</font>
 
-<font size="5"> <kbd>*PS: Foi necessário utilizar um endpoint diferente do passado no exame, pois foi verificado que a url passada:*</kbd> </font>
+<font size="5"> *PS: Foi necessário utilizar um endpoint diferente do passado no exame, pois foi verificado que a url passada:* </font>
 - <code>https://query2.finance.yahoo.com/v8/finance/chart/PETR4.SA</code>  <br>
-<font size="5"> <kbd>*somente traz os timestamps do dia corrente, e não nos últimos 30 dias. <br> Logo, foi utilizada a a seguinte url:*</kbd> </font>
+<font size="5"> *somente traz os timestamps do dia corrente, e não nos últimos 30 dias. <br> Logo, foi utilizada a a seguinte url:* </font>
 - <code>https://query1.finance.yahoo.com/v7/finance/chart/</code>  <br>
-<font size="5"> <kbd>*com os parâmetros do ativo selecionado, no período de 30 dias*</kbd> </font>
+<font size="5"> *com os parâmetros do ativo selecionado, no período de 30 dias* </font>
 <hr>
 
 ## Servidor de Desenvolvimento (Angular)
