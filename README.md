@@ -32,7 +32,7 @@ para o frontend. <br>
 
 ## Demo
 
-<img src="src/assets/demo-asset-variation.gif" alt="Demo" width="500">
+<img src="src/assets/demo-asset-variation.gif" alt="Demo" width="750">
 
 + Para uma demonstração mockada visite aqui o: <a href="https://perolanegra.github.io/asset-variation-exam/" target="_blank">GH-Pages!<a> <br>
 + <strong>A implementação da Demo mockada se encontra na branch: <a href="https://github.com/Perolanegra/asset-variation-exam/tree/feature/gh-pages-live"><kbd>*feature/gh-pages-live*</kbd></a></strong>
