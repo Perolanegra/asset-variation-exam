@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { MatButtonModule } from '@angular/material/button';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { distinctUntilChanged } from 'rxjs';
+import { DataService } from './dc-pattern/decorator.service';
 
 IndicatorsCore(Highcharts);
 IndicatorZigzag(Highcharts);
@@ -30,6 +31,8 @@ export class AppComponent implements AfterViewInit {
   title = 'asset-variation-exam';
   showChart = true;
 
+  service2 = inject(DataService);
+
   ngAfterViewInit(): void {
     this.service.mySubject
       .asObservable()
@@ -45,7 +48,10 @@ export class AppComponent implements AfterViewInit {
           this.showChart = true;
         }
       });
+      this.getData();
   }
+
+  getData = () => this.service2.getData(JSON.stringify({ getDataMethod: {}, anotherBehavior: {} }));
 
   selectAssetState = (assetName: string): void => {
     this.showChart = false;
@@ -145,13 +151,12 @@ export class AppComponent implements AfterViewInit {
 
             // variação referente ao preço do dia de abertura (%).
             // vão ser iguais no primeiro e no segundo.
-            const variationPercentOpeningDay = (open - firstPrice) * 100; // variação referente ao preço do primeiro dia (%).
+            const variationPercentOpeningDay = (open - firstPrice)/firstPrice * 100; // variação referente ao preço do primeiro dia (%).
             // variação referente ao preço do dia anterior (%).
+            const previous = (this.series.data[this.index - 1] as any).options.open;
             const variationPreviousDay =
               this.index > 0
-                ? ((open -
-                    (this.series.data[this.index - 1] as any).options
-                      .open) as number) * 100
+                ? (open - previous as number) * 100 / previous
                 : 0;
 
             return `
